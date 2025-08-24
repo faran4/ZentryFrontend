@@ -11,7 +11,6 @@ const About = () => {
     const aboutImgRef = useRef(null);
     const borderRef = useRef(null);
     const containerRef = useRef(null);
-    const overlayImgRef = useRef(null); // Add ref for overlay image
     const typewriterRef = useRef(null); // Add ref for typewriter text
 
     const handleMouseMove = ({ clientX, clientY, currentTarget }) => {
@@ -137,49 +136,6 @@ const About = () => {
                     }
                 }
             });
-        }
-
-        // Initial 3D scroll animation for the image container
-        if(containerRef.current) {
-            gsap.set(containerRef.current, {
-                y: 100,
-                z: -200,              // Start behind the screen
-                rotationX: -45,       // Tilted forward instead of back
-                opacity: 0,
-                transformPerspective: 1000,
-            });
-
-            gsap.to(containerRef.current, {
-                y: 0,
-                z: 0,                 // Come forward to normal position
-                rotationX: 0,         // Rotate to vertical position
-                opacity: 1,
-                duration: 1.2,
-                ease: "power2.out",
-                scrollTrigger: {
-                    trigger: containerRef.current,
-                    start: "top 80%",
-                    toggleActions: "play none none reverse",
-                }
-            })
-        }
-
-        // Animate overlay image from opacity 0 to 1 on scroll
-        if(overlayImgRef.current) {
-            gsap.set(overlayImgRef.current, {
-                opacity: 0,
-            });
-
-            gsap.to(overlayImgRef.current, {
-                opacity: 1,
-                duration: 0.8,
-                ease: "power2.out",
-                scrollTrigger: {
-                    trigger: overlayImgRef.current,
-                    start: "top 85%",
-                    toggleActions: "play none none reverse",
-                }
-            })
         }
 
         // Existing clip animation
@@ -323,7 +279,6 @@ const About = () => {
                 </div>
 
                 <img
-                    ref={overlayImgRef}
                     src="img/aboutimg1.webp"
                     alt="cover"
                     className="absolute -left-5 -top-30 w-[120%] h-[120%] object-cover z-50 pointer-events-none"
