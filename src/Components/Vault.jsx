@@ -17,10 +17,15 @@ const Vault = () => {
     const progressBarRef1 = useRef(null);
     const progressBarRef2 = useRef(null);
     const progressBarRef3 = useRef(null);
+    const mobileProgressRef1 = useRef(null);
+    const mobileProgressRef2 = useRef(null);
+    const mobileProgressRef3 = useRef(null);
+    const mobileProgressBarRef1 = useRef(null);
+    const mobileProgressBarRef2 = useRef(null);
+    const mobileProgressBarRef3 = useRef(null);
     const [activeBar, setActiveBar] = useState(1);
     const [videoIndex, setVideoIndex] = useState(1);
     const [phase, setPhase] = useState(0);
-    const [isTransitioning, setIsTransitioning] = useState(false);
 
     const totalVideos = 3;
     const getVideoSrc = (index) => `/videos/vault${index}.webm`;
@@ -35,25 +40,62 @@ const Vault = () => {
         }
 
         if (vaultRef.current) {
-            gsap.set([progressBarRef1.current, progressBarRef2.current, progressBarRef3.current], {
-                height: "0%", transformOrigin: "top"
+            // Kill any existing ScrollTriggers for this element
+            ScrollTrigger.getAll().forEach(st => {
+                if (st.vars.trigger === vaultRef.current) {
+                    st.kill();
+                }
             });
 
-            // Initially show first progress item, hide others
-            gsap.set(progressRef1.current, {opacity: 1, display: "flex"});
-            gsap.set([progressRef2.current, progressRef3.current], {opacity: 0, display: "none"});
+            // Detect if mobile
+            const isMobile = window.innerWidth < 768;
 
-            gsap.timeline({
+            // Get the correct refs based on screen size
+            const refs = isMobile
+                ? [mobileProgressRef1, mobileProgressRef2, mobileProgressRef3]
+                : [progressRef1, progressRef2, progressRef3];
+            const barRefs = isMobile
+                ? [mobileProgressBarRef1, mobileProgressBarRef2, mobileProgressBarRef3]
+                : [progressBarRef1, progressBarRef2, progressBarRef3];
+
+            // Set initial states for progress bars
+            barRefs.forEach(ref => {
+                if (ref.current) {
+                    gsap.set(ref.current, {
+                        height: "0%",
+                        transformOrigin: "top"
+                    });
+                }
+            });
+
+            // Initially hide all progress content except the first one
+            refs.forEach((ref, index) => {
+                if (ref.current) {
+                    if (index === 0) {
+                        ref.current.style.display = "flex";
+                        ref.current.style.opacity = "1";
+                    } else {
+                        ref.current.style.display = "none";
+                        ref.current.style.opacity = "0";
+                    }
+                }
+            });
+
+            // Create timeline with responsive end value
+            const timeline = gsap.timeline({
                 scrollTrigger: {
                     trigger: vaultRef.current,
-                    start: "bottom bottom",
-                    end: "bottom -200%",  // Increased scroll distance - now takes 3x longer to complete
+                    start: "top top",
+                    end: () => {
+                        // Adjust end based on screen size
+                        return isMobile ? "bottom -150%" : "bottom -200%";
+                    },
                     scrub: 1,
                     pin: true,
+                    pinSpacing: true,
+                    invalidateOnRefresh: true, // Recalculate on window resize
                     onUpdate: (self) => {
                         const progress = self.progress;
-                        const refs = [progressRef1, progressRef2, progressRef3];
-                        const barRefs = [progressBarRef1, progressBarRef2, progressBarRef3];
 
                         // Determine current and next phase
                         const currentPhase = progress <= 0.33 ? 0 : progress <= 0.66 ? 1 : 2;
@@ -61,42 +103,33 @@ const Vault = () => {
                             currentPhase === 1 ? (progress - 0.33) / 0.33 :
                                 (progress - 0.66) / 0.34;
 
-                        // Always ensure at least one progress item is visible
-                        let shouldShowCurrent = true;
-
-                        // Handle phase transitions more smoothly
+                        // Handle phase transitions - make sure current phase is visible
                         refs.forEach((ref, i) => {
                             if (ref.current) {
                                 if (i === currentPhase) {
-                                    // Always show current phase
-                                    gsap.set(ref.current, {
-                                        display: "flex",
-                                        opacity: 1
-                                    });
+                                    // Make current phase visible
+                                    ref.current.style.display = "flex";
+                                    ref.current.style.opacity = "1";
                                 } else {
-                                    // Hide other phases only if current is fully visible
-                                    gsap.set(ref.current, {
-                                        opacity: 0,
-                                        display: "none"
-                                    });
+                                    // Hide other phases
+                                    ref.current.style.display = "none";
+                                    ref.current.style.opacity = "0";
                                 }
                             }
                         });
 
-                        // Update progress bars - reset non-current bars, animate current
+                        // Update progress bars
                         barRefs.forEach((barRef, i) => {
                             if (barRef.current) {
                                 if (i === currentPhase) {
                                     // Animate current progress bar
-                                    gsap.set(barRef.current, {
-                                        height: `${Math.max(0, Math.min(100, localProgress * 100))}%`
-                                    });
+                                    barRef.current.style.height = `${Math.max(0, Math.min(100, localProgress * 100))}%`;
                                 } else if (i < currentPhase) {
-                                    // Keep previous bars at 100%
-                                    gsap.set(barRef.current, {height: "100%"});
+                                    // Previous bars at 100%
+                                    barRef.current.style.height = "100%";
                                 } else {
                                     // Future bars at 0%
-                                    gsap.set(barRef.current, {height: "0%"});
+                                    barRef.current.style.height = "0%";
                                 }
                             }
                         });
@@ -104,9 +137,28 @@ const Vault = () => {
                         // Update state
                         setActiveBar(currentPhase + 1);
                         setPhase(currentPhase);
+                    },
+                    onEnter: () => {
+                        // Show first item when entering the pinned section
+                        if (refs[0].current) {
+                            refs[0].current.style.display = "flex";
+                            refs[0].current.style.opacity = "1";
+                        }
                     }
                 }
             });
+
+            // Refresh ScrollTrigger on window resize
+            const handleResize = () => {
+                ScrollTrigger.refresh();
+            };
+
+            window.addEventListener('resize', handleResize);
+
+            return () => {
+                window.removeEventListener('resize', handleResize);
+                timeline.kill();
+            };
         }
     }, [])
 
@@ -122,27 +174,28 @@ const Vault = () => {
 
     const handleVideoChange = (newIndex) => {
         if (newIndex !== videoIndex) {
-            // Instant video change - no transition delay
             setVideoIndex(newIndex);
         }
     };
 
-    const ProgressItem = ({num, title, text, progressRef, progressBarRef}) => (
+    const ProgressItem = ({num, title, text, progressRef, progressBarRef, isMobile = false}) => (
         <div className="flex flex-col">
-            <div
-                className={`flex items-center gap-3 mb-2 transition-all duration-300 ${activeBar === num ? 'text-lg' : 'text-sm'}`}>
-                <span className="text-black">0{num}</span>
-                <h3 className="text-black">{title}</h3>
+            <div className={`flex items-center gap-3 mb-2 transition-all duration-300 ${
+                activeBar === num ? (isMobile ? 'text-sm' : 'text-base md:text-lg') : 'text-xs md:text-sm'
+            }`}>
+                <span className={isMobile ? "text-black" : "text-black"}>0{num}</span>
+                <h3 className={`font-medium ${isMobile ? "text-black" : "text-black"}`}>{title}</h3>
             </div>
-            <div className="flex items-start gap-6" ref={progressRef} style={{display: 'none', opacity: 0}}>
+            <div className="flex items-start gap-4 md:gap-6" ref={progressRef}>
                 <div className="ml-2">
-                    <div className="w-0.5 h-16 bg-black/20 rounded-full relative">
-                        <div ref={progressBarRef} className="w-full bg-black rounded-full absolute top-0"
+                    <div className={`w-0.5 ${isMobile ? 'h-10' : 'h-12 md:h-16'} bg-black/20 rounded-full relative`}>
+                        <div ref={progressBarRef}
+                             className="w-full bg-black rounded-full absolute top-0 transition-height"
                              style={{height: '0%'}}/>
                     </div>
                 </div>
-                <div className="w-72 max-md:flex-1">
-                    <p className="text-black/70 text-xs md:text-[12px] leading-tight">{text}</p>
+                <div className={`flex-1 ${isMobile ? '' : 'md:w-72'}`}>
+                    <p className={`text-black/70 ${isMobile ? 'text-[10px]' : 'text-xs md:text-[12px]'} leading-relaxed pr-2`}>{text}</p>
                 </div>
             </div>
         </div>
@@ -164,69 +217,116 @@ const Vault = () => {
     ];
 
     return (
-        <div ref={vaultRef} id="vault" className="min-h-screen w-screen relative" style={{ backgroundColor: '#000000' }}>
+        <div ref={vaultRef} id="vault" className="min-h-screen w-screen relative overflow-hidden"
+             style={{ backgroundColor: '#000000' }}>
 
-            {/* Mobile: Stack Layout */}
-            <div className="flex md:hidden flex-col p-4 gap-8 min-h-screen">
-                <div>
-                    <AnimatedTitle title="The univ<b>e</b>rse <br /> powered by ze<b>n</b>t" id="vault-title"
-                                   containerClass="mt-4 pointer-events-none relative z-10"
-                                   alignment="left"/>
+            {/* Mobile Layout */}
+            <div className="md:hidden flex flex-col h-screen px-4 py-6">
+                {/* Top Section */}
+                <div className="flex-shrink-0">
+                    <AnimatedTitle
+                        title="The univ<b>e</b>rse <br /> powered by ze<b>n</b>t"
+                        id="vault-title"
+                        containerClass="pointer-events-none relative z-10"
+                        alignment="left"/>
                     <div ref={btnRef} className="mt-4">
                         <Button id="vault-button" title="Enter Vault" containerClass="text-blue-50 !bg-black flex"/>
                     </div>
                 </div>
 
-                <div className="w-60 h-60 mx-auto rounded-lg overflow-hidden">
-                    <video
-                        key={videoIndex} // Force remount on change
-                        src={getVideoSrc(videoIndex)}
-                        loop
-                        muted
-                        autoPlay
-                        playsInline
-                        className="w-full h-full object-cover"
-                        onError={(e) => console.error('Desktop video error:', e)}
-                    />
+                {/* Middle Section - Video */}
+                <div className="flex-1 flex items-center justify-center py-4">
+                    <div className="w-60 h-60 rounded-lg overflow-hidden">
+                        <video
+                            key={videoIndex}
+                            src={getVideoSrc(videoIndex)}
+                            loop
+                            muted
+                            autoPlay
+                            playsInline
+                            className="w-full h-full object-cover"
+                            onError={(e) => console.error('Mobile video error:', e)}
+                        />
+                    </div>
                 </div>
 
-                <div className="flex font-family-general flex-col gap-3">
-                    <ProgressItem num={1} title={progressData[0].title} text={progressData[0].text}
-                                  progressRef={progressRef1} progressBarRef={progressBarRef1}/>
-                    <ProgressItem num={2} title={progressData[1].title} text={progressData[1].text}
-                                  progressRef={progressRef2} progressBarRef={progressBarRef2}/>
-                    <ProgressItem num={3} title={progressData[2].title} text={progressData[2].text}
-                                  progressRef={progressRef3} progressBarRef={progressBarRef3}/>
+                {/* Bottom Section - Progress Items */}
+                <div className="flex-shrink-0 pb-4">
+                    <div className="flex font-family-general flex-col gap-3">
+                        <ProgressItem
+                            num={1}
+                            title={progressData[0].title}
+                            text={progressData[0].text}
+                            progressRef={mobileProgressRef1}
+                            progressBarRef={mobileProgressBarRef1}
+                            isMobile={true}
+                        />
+                        <ProgressItem
+                            num={2}
+                            title={progressData[1].title}
+                            text={progressData[1].text}
+                            progressRef={mobileProgressRef2}
+                            progressBarRef={mobileProgressBarRef2}
+                            isMobile={true}
+                        />
+                        <ProgressItem
+                            num={3}
+                            title={progressData[2].title}
+                            text={progressData[2].text}
+                            progressRef={mobileProgressRef3}
+                            progressBarRef={mobileProgressBarRef3}
+                            isMobile={true}
+                        />
+                    </div>
                 </div>
             </div>
 
-            {/* Desktop/Tablet: Positioned Layout */}
-            <div className="hidden md:block">
+            {/* Desktop/Tablet Layout */}
+            <div className="hidden md:block h-screen relative">
                 {/* Top Left */}
-                <div className="absolute top-4 left-0">
-                    <AnimatedTitle title="The univ<b>e</b>rse <br /> powered by ze<b>n</b>t" id="vault-title"
-                                   containerClass="mt-4 pointer-events-none relative z-10"
-                                   alignment="left"/>
-                    <div ref={btnRef} className="ml-12 mt-4">
+                <div className="absolute top-8 left-8">
+                    <AnimatedTitle
+                        title="The univ<b>e</b>rse <br /> powered by ze<b>n</b>t"
+                        id="vault-title"
+                        containerClass="pointer-events-none relative z-10"
+                        alignment="left"/>
+                    <div className="mt-4 ml-12">
                         <Button id="vault-button" title="Enter Vault" containerClass="text-blue-50 !bg-black flex"/>
                     </div>
                 </div>
 
-                {/* Bottom Left */}
-                <div className="absolute bottom-8 left-8 flex font-family-general flex-col gap-3">
-                    <ProgressItem num={1} title={progressData[0].title} text={progressData[0].text}
-                                  progressRef={progressRef1} progressBarRef={progressBarRef1}/>
-                    <ProgressItem num={2} title={progressData[1].title} text={progressData[1].text}
-                                  progressRef={progressRef2} progressBarRef={progressBarRef2}/>
-                    <ProgressItem num={3} title={progressData[2].title} text={progressData[2].text}
-                                  progressRef={progressRef3} progressBarRef={progressBarRef3}/>
+                {/* Bottom Left - Progress Items */}
+                <div className="absolute bottom-8 left-8 max-w-md">
+                    <div className="flex font-family-general flex-col gap-3">
+                        <ProgressItem
+                            num={1}
+                            title={progressData[0].title}
+                            text={progressData[0].text}
+                            progressRef={progressRef1}
+                            progressBarRef={progressBarRef1}
+                        />
+                        <ProgressItem
+                            num={2}
+                            title={progressData[1].title}
+                            text={progressData[1].text}
+                            progressRef={progressRef2}
+                            progressBarRef={progressBarRef2}
+                        />
+                        <ProgressItem
+                            num={3}
+                            title={progressData[2].title}
+                            text={progressData[2].text}
+                            progressRef={progressRef3}
+                            progressBarRef={progressBarRef3}
+                        />
+                    </div>
                 </div>
 
-                {/* Bottom Right - Desktop Video */}
-                <div className="absolute bottom-8 right-12">
-                    <div className="w-120 h-120 rounded-lg overflow-hidden">
+                {/* Bottom Right - Video */}
+                <div className="absolute bottom-8 right-8 lg:right-12">
+                    <div className="w-80 h-80 lg:w-96 lg:h-96 rounded-lg overflow-hidden">
                         <video
-                            key={videoIndex} // Force remount on change
+                            key={videoIndex}
                             src={getVideoSrc(videoIndex)}
                             loop
                             muted

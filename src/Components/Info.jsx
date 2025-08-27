@@ -131,7 +131,7 @@ const InteractiveSquare = ({ image, altText }) => {
                 {/* Small square trigger */}
                 <div
                     id="squared"
-                    className="w-[0.4em] h-[0.4em] mb-[14px] mx-3 square bg-black rounded-lg cursor-pointer" />
+                    className="w-[0.4em] h-[0.4em] mb-[9px] md:mb-[14px] mx-1 md:mx-3 square bg-black rounded-sm md:rounded-lg cursor-pointer" />
 
                 {/* Image popup with parallax */}
                 {isHovered && (
@@ -368,16 +368,16 @@ const Info = () => {
     return (
         <section id="info" className="min-h-screen w-screen bg-[#dfdff0] py-40 ">
             <div className="flex flex-col gap-4 my-4 items-center mx-auto container px-4">
-                <h2 className="font-family-general text-sm uppercase my-4 md:text-[10px] tracking-widest">
+                <h2 className="font-family-general font-bold text-[10px] uppercase my-4 tracking-widest">
                     WHO WE ARE
                 </h2>
 
                 <div
                     ref={containerRef}
-                    className="flex flex-col text-7xl uppercase gap-1 leading-[0.8] md:text-[6.8rem] my-3"
+                    className="flex flex-col uppercase gap-1 leading-[0.75] md:leading-[0.8] text-[3.2rem] md:text-[6.8rem] my-3"
                 >
                     {content.map((line, lineIndex) => (
-                        <div key={lineIndex} className="flex items-center justify-center max-w-full flex-wrap gap-3 px-10 md:gap-4">
+                        <div key={lineIndex} className="flex items-center justify-center max-w-full flex-wrap gap-2 px-10 md:gap-4">
                             {line.words.map((word, wordIndex) => (
                                 <React.Fragment key={wordIndex}>
                                     <span
@@ -402,14 +402,15 @@ const Info = () => {
                     ))}
                 </div>
 
-                <div className="max-w-96 text-center !font-thin font-family-circular-web text-md md:max-w-[34rem]">
-                    <p>Zentry envisions a future where players, emerging tech, and <br /> a new economy unite at the convergence of gaming and AI.</p>
+                <div className="max-w-48 text-center !font-thin font-family-circular-web text-md md:max-w-[34rem]">
+                    <p className="md:hidden">Zentry envisions a future where players, emerging tech, a new economy unite at the convergence of gaming and AI.</p>
+                    <p className="hidden md:flex">Zentry envisions a future where players, emerging tech, and <br /> a new economy unite at the convergence of gaming and AI.</p>
                 </div>
 
                 <Button
                     id="discover-button"
                     title="Discover Who We Are"
-                    containerClass="md:flex hidden items-center justify-center gap-1"
+                    containerClass="md:flex items-center justify-center gap-1"
                 />
             </div>
         </section>

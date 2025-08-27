@@ -138,46 +138,61 @@ const About = () => {
             });
         }
 
-        // Existing clip animation
-        const clipAnimation = gsap.timeline({
-            scrollTrigger: {
-                trigger: '#clip',
-                start: "center center",
-                end: "+=800 center",
-                scrub: 0.5,
-                pin: true,
-                pinSpacing: true,
-            }
-        })
+        // Use matchMedia to handle responsive animations
+        const mm = gsap.matchMedia();
 
-        clipAnimation.to('.about-image', {
-            width: '100vw',
-            height: '100vh',
-            borderRadius: 0,
-        })
-            // Animate BOTH clip paths to expand and fill the screen
-            .to('#clip-path-shape', {
-                attr: {
-                    d: 'M 0,0 L 1,0 Q 1,0 1,0 L 1,1 Q 1,1 1,1 L 0,1 Q 0,1 0,1 L 0,0 Q 0,0 0,0 Z'
-                },
-                ease: "none"
-            }, 0)
-            .to('#about-img', {
+        mm.add({
+            // Mobile and tablet (below md breakpoint - 768px)
+            isMobile: "(max-width: 767px)",
+            // Desktop (md and above - 768px+)
+            isDesktop: "(min-width: 768px)"
+        }, (context) => {
+            let { isMobile } = context.conditions;
+
+            // Adjust ScrollTrigger settings based on screen size
+            const clipAnimation = gsap.timeline({
+                scrollTrigger: {
+                    trigger: '#clip',
+                    start: isMobile ? "top top+=100" : "center center",
+                    end: isMobile ? "+=600 center" : "+=800 center",
+                    scrub: isMobile ? 0.3 : 0.5,
+                    pin: true,
+                    pinSpacing: true,
+                    invalidateOnRefresh: true,
+                }
+            });
+
+            clipAnimation.to('.about-image', {
+                width: '100vw',
+                height: '100vh',
                 borderRadius: 0,
-                scale: 1,
-                width: '100%',
-                height: '100%',
-                x: 0,
-                y: 0,
-                top: 0,
-                left: 0,
-                ease: "none"
-            }, 0)
+            })
+                // Animate BOTH clip paths to expand and fill the screen
+                .to('#clip-path-shape', {
+                    attr: {
+                        d: 'M 0,0 L 1,0 Q 1,0 1,0 L 1,1 Q 1,1 1,1 L 0,1 Q 0,1 0,1 L 0,0 Q 0,0 0,0 Z'
+                    },
+                    ease: "none"
+                }, 0)
+                .to('#about-img', {
+                    borderRadius: 0,
+                    scale: 1,
+                    width: '100%',
+                    height: '100%',
+                    x: 0,
+                    y: 0,
+                    top: 0,
+                    left: 0,
+                    ease: "none"
+                }, 0);
+        });
+
+        return () => mm.revert();
     });
 
     return (
         <div id="about" className="min-h-screen w-screen">
-            <div className="relative mb-8 mt-36 flex flex-col items-center gap-5">
+            <div className="relative mb-8 mt-20 sm:mt-28 md:mt-36 flex flex-col items-center gap-3 sm:gap-4 md:gap-5">
                 <h2
                     ref={typewriterRef}
                     className="font-family-general text-sm uppercase md:text-[10px]"
@@ -185,11 +200,25 @@ const About = () => {
                     {/* Text will be populated by GSAP animation */}
                 </h2>
 
-                <AnimatedTitle title="Disc<b>o</b>ver the world's <br /> largest shared <b>a</b>dventure" containerClass="mt-5 !text-black text-center" />
+                {/* Mobile version - no breaks, smaller text */}
+                <div className="block md:hidden">
+                    <AnimatedTitle
+                        title="Disc<b>o</b>ver the world's largest shared <b>a</b>dventure"
+                        containerClass="mt-5 !text-black text-center !tracking-[0px]"
+                    />
+                </div>
+
+                {/* Desktop version - with breaks, larger text */}
+                <div className="hidden md:block">
+                    <AnimatedTitle
+                        title="Disc<b>o</b>ver the world's <br /> largest shared <b>a</b>dventure"
+                        containerClass="mt-5 !text-black text-center"
+                    />
+                </div>
 
                 <div className="about-subtext">
-                    <p>The Game of Games begins-your life, now an epic MMORPG</p>
-                    <p>Zentry unites every player from countless games and platforms</p>
+                    <p className="hidden md:flex">The Game of Games begins-your life, now an epic MMORPG <br /> Zentry unites every player from countless games and platforms</p>
+                    <p className="md:hidden">The Game of Games begins-your life, now an epic MMORPG. Zentry unites every player from countless games and platforms</p>
                 </div>
             </div>
 
@@ -281,7 +310,7 @@ const About = () => {
                 <img
                     src="img/aboutimg1.webp"
                     alt="cover"
-                    className="absolute -left-5 -top-30 w-[120%] h-[120%] object-cover z-50 pointer-events-none"
+                    className="absolute -left-2 sm:-left-3 md:-left-4 lg:-left-5 -top-16 sm:-top-20 md:-top-25 lg:-top-30 w-[140%] sm:w-[130%] md:w-[125%] lg:w-[120%] h-[140%] sm:h-[130%] md:h-[125%] lg:h-[120%] object-cover z-50 pointer-events-none"
                 />
             </div>
         </div>

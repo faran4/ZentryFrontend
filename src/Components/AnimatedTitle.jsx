@@ -152,7 +152,7 @@ const AnimatedTitle = ({ title, containerClass, alignment = "center" }) => {
     return (
         <div ref={containerRef} className={`animated-title special-font font-family-zentry ${containerClass}`}>
             {title.split('<br />').map((line, index) => (
-                <div key={index} className={`${getFlexClasses()} max-w-full flex-wrap gap-2 px-10 md:gap-3`}>
+                <div key={index} className={`${getFlexClasses()} max-w-full flex-wrap gap-2 md:px-10 md:gap-3`}>
                     {line.split(' ').map((word, i) => (
                         <span
                             key={i}

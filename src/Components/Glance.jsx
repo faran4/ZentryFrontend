@@ -113,8 +113,8 @@ const Glance = () => {
         <section id="Glance" className="py-40 w-screen">
             <div
                 id="glance-title"
-                className="w-full flex flex-col gap-4 pb-8">
-                <h2 ref={typewriterRef} className="font-family-general text-sm uppercase ml-10 md:text-[10px] tracking-widest">
+                className="w-full flex flex-col justify-center items-center md:justify-start md:items-start gap-4 pb-8">
+                <h2 ref={typewriterRef} className="font-family-general text-[10px] font-bold uppercase ml-10 tracking-widest">
                     Our universe in a nutshell
                 </h2>
                 <AnimatedTitle
@@ -123,18 +123,20 @@ const Glance = () => {
                     containerClass="pointer-events-none relative z-10"
                 />
             </div>
-            <div className="container mx-auto pt-16 px-4 pb-16 max-w-5xl">
-                <div className="grid grid-cols-8 auto-rows-[140px] gap-8">
 
-                    {/* Card 1 - Top Left */}
+            {/* DESKTOP VIEW - Hidden on mobile */}
+            <div className="hidden md:block container mx-auto pt-16 px-4 pb-16 max-w-5xl">
+                <div className="w-full grid grid-cols-8 auto-rows-[140px] gap-8">
+
+                    {/* Card 1 - Products */}
                     <div
                         ref={el => cardRefs.current[0] = el}
                         className="col-start-1 col-span-4 row-start-2 row-span-2 flex bg-black border border-white/30 rounded-lg p-4">
                         <div className="flex flex-col gap-1 w-1/2">
-                            <h2 className="font-family-general text-md text-blue-50 md:text-[13px] leading-tight">
+                            <h2 className="font-family-general text-[13px] text-blue-50 leading-tight">
                                 Products
                             </h2>
-                            <h1 className="font-family-zentry special-font font-black text-blue-50 text-6xl md:text-8xl">4<b>+</b></h1>
+                            <h1 className="font-family-zentry special-font font-black text-blue-50 text-8xl">4<b>+</b></h1>
                         </div>
                         <div className="w-1/2 flex items-center justify-center overflow-hidden">
                             <video
@@ -151,7 +153,7 @@ const Glance = () => {
                         </div>
                     </div>
 
-                    {/* Card 2 - Top Right */}
+                    {/* Card 2 - Residents */}
                     <div
                         ref={el => cardRefs.current[1] = el}
                         className="col-start-5 col-span-4 row-start-1 row-span-4 bg-violet-300 text-black rounded-lg flex items-center justify-center p-6 relative cursor-pointer overflow-hidden"
@@ -166,7 +168,7 @@ const Glance = () => {
                         </div>
 
                         <div className="absolute top-3 left-3">
-                            <h2 className="font-family-general text-md text-black md:text-[13px] leading-tight">
+                            <h2 className="font-family-general text-[13px] text-black leading-tight">
                                 Residents
                             </h2>
                         </div>
@@ -247,7 +249,7 @@ const Glance = () => {
                         </div>
                     </div>
 
-                    {/* Card 3 - Always Centered */}
+                    {/* Card 3 - Partners */}
                     <div
                         ref={el => cardRefs.current[2] = el}
                         className="col-start-2 col-span-3 row-start-4 row-span-2 bg-yellow-300 text-black rounded-lg flex items-center justify-center p-6 relative cursor-pointer overflow-hidden"
@@ -280,16 +282,16 @@ const Glance = () => {
                                   >
                                     <b>3</b>
                                   </span>
-                                  <span
-                                      className="font-black special-font text-black leading-none"
-                                      style={{
-                                          fontSize: '13rem',
-                                          fontWeight: '900',
-                                          marginRight: isHovered ? "1rem" : "2rem",
-                                          transform: isHovered ? 'scaleX(1.5)' : 'scaleX(1.4)',
-                                          transition: 'all 0.7s cubic-bezier(0.68, -0.35, 0.32, 1.35)',
-                                      }}
-                                  >
+                                <span
+                                    className="font-black special-font text-black leading-none"
+                                    style={{
+                                        fontSize: '13rem',
+                                        fontWeight: '900',
+                                        marginRight: isHovered ? "1rem" : "2rem",
+                                        transform: isHovered ? 'scaleX(1.5)' : 'scaleX(1.4)',
+                                        transition: 'all 0.7s cubic-bezier(0.68, -0.35, 0.32, 1.35)',
+                                    }}
+                                >
                                       <b>0</b>
                                 </span>
                                 <sup
@@ -308,13 +310,13 @@ const Glance = () => {
 
                         {/* Partners label */}
                         <div className="absolute bottom-6 right-6">
-                            <h2 className="font-family-general text-md text-black md:text-[13px] leading-tight">
+                            <h2 className="font-family-general text-[13px] text-black leading-tight">
                                 Partners
                             </h2>
                         </div>
                     </div>
 
-                    {/* Card 4 - Bottom Left (starts lower) */}
+                    {/* Card 4 - Treasury */}
                     <div
                         ref={el => cardRefs.current[3] = el}
                         className="col-start-1 col-span-4 row-start-6 row-span-4 flex flex-col relative bg-violet-300 rounded-lg p-3">
@@ -325,10 +327,10 @@ const Glance = () => {
                             />
                         </div>
                         <div className="flex flex-col gap-1 w-1/2">
-                            <h2 className="font-family-general text-md text-black md:text-[13px] leading-tight">
+                            <h2 className="font-family-general text-[13px] text-black leading-tight">
                                 Treasury
                             </h2>
-                            <h1 className="font-family-zentry special-font text-black text-6xl md:text-8xl">140<b>M+</b></h1>
+                            <h1 className="font-family-zentry special-font text-black text-8xl">140<b>M+</b></h1>
                         </div>
                         <div className="w-full flex items-center justify-center overflow-hidden">
                             <video
@@ -345,19 +347,19 @@ const Glance = () => {
                         </div>
                     </div>
 
-                    {/* Card 5 - Middle Right */}
+                    {/* Card 5 - Backers */}
                     <div
                         ref={el => cardRefs.current[4] = el}
                         className="col-start-5 col-span-3 row-start-5 row-span-2 flex flex-col bg-black border border-white/30 rounded-lg p-4">
                         <div className="flex flex-col gap-1 w-full">
-                            <h1 className="font-family-zentry special-font animated-word uppercase text-blue-50 text-3xl md:text-5xl">
+                            <h1 className="font-family-zentry special-font animated-word uppercase text-blue-50 text-5xl">
                                 W<b>o</b>rld-Class <br/> B<b>a</b>ckers
                             </h1>
                         </div>
                         <div className="font-family-general flex flex-col w-full text-blue-50 text-end mt-2 gap-[1px]">
                             {
                                 Backers.map((backer, index) => (
-                                    <h2 key={index} className="font-family-general text-sm md:text-[11px] leading-tight">
+                                    <h2 key={index} className="font-family-general text-[11px] leading-tight">
                                         {backer}
                                     </h2>
                                 ))
@@ -365,7 +367,7 @@ const Glance = () => {
                         </div>
                     </div>
 
-                    {/* Card 6 - Bottom Right */}
+                    {/* Card 6 - Revenue */}
                     <div
                         ref={el => cardRefs.current[5] = el}
                         className="col-start-5 col-span-4 row-start-7 row-span-2 bg-[#dfdff0] text-black rounded-lg flex items-center justify-center p-6 relative cursor-pointer overflow-hidden"
@@ -374,10 +376,10 @@ const Glance = () => {
                     >
                         {/* Revenue label with 2024 */}
                         <div className="absolute top-3 left-3">
-                            <h2 className="font-family-general text-md text-black md:text-[13px] leading-tight">
+                            <h2 className="font-family-general text-[13px] text-black leading-tight">
                                 Revenue generated
                             </h2>
-                            <h2 className="font-family-general text-md text-black md:text-[13px] leading-tight">
+                            <h2 className="font-family-general text-[13px] text-black leading-tight">
                                 2024
                             </h2>
                         </div>
@@ -426,6 +428,291 @@ const Glance = () => {
                                         fontWeight: '900',
                                         transition: 'all 0.7s cubic-bezier(0.68, -0.35, 0.32, 1.35)',
                                         transform: isHoveredCard6 ? 'scaleX(1.5) scaleY(1.3)' : 'scaleX(1.1) scaleY(1.2)',
+                                    }}
+                                >
+                                    <b>M</b>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* MOBILE VIEW - Hidden on desktop */}
+            <div className="md:hidden container mx-auto pt-16 px-4 pb-16 max-w-5xl">
+                <div className="w-full grid grid-cols-5 auto-rows-[90px] gap-6">
+
+                    {/* Card 1 - Products */}
+                    <div
+                        ref={el => cardRefs.current[0] = el}
+                        className="col-start-2 col-span-4 row-start-5 row-span-2 flex bg-black border border-white/30 rounded-lg p-4">
+                        <div className="flex flex-col gap-1 w-1/2">
+                            <h2 className="font-family-general text-[10px]  md:text-sm text-blue-50 leading-tight">
+                                Products
+                            </h2>
+                            <h1 className="font-family-zentry special-font font-black text-blue-50 text-5xl md:text-6xl">4<b>+</b></h1>
+                        </div>
+                        <div className="w-1/2 flex items-center justify-center overflow-hidden ">
+                            <video
+                                src="/videos/card-1.webm"
+                                loop
+                                muted
+                                autoPlay
+                                playsInline
+                                className="w-full h-full object-contain scale-[2] translate-x-[-60px] md:translate-x-[-50px]"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Card 2 - Residents */}
+                    <div
+                        ref={el => cardRefs.current[1] = el}
+                        className="col-start-1 col-span-4 row-start-1 row-span-4 bg-violet-300 text-black rounded-lg flex items-center justify-center p-6 relative cursor-pointer overflow-hidden"
+                        onMouseEnter={() => setIsHoveredCard2(true)}
+                        onMouseLeave={() => setIsHoveredCard2(false)}
+                    >
+                        <div className="absolute bottom-0 left-0 w-full h-[95%] z-10 pointer-events-none">
+                            <img
+                                src="/img/card2pic.webp"
+                                className="w-full h-full object-cover rounded-b-lg"
+                            />
+                        </div>
+
+                        <div className="absolute top-2 left-2">
+                            <h2 className="font-family-general text-sm text-black leading-tight">
+                                Residents
+                            </h2>
+                        </div>
+
+                        {/* Numbers - Centered */}
+                        <div
+                            style={{
+                                transition: 'all 0.7s cubic-bezier(0.68, -0.35, 0.32, 1.35)',
+                                transform: 'translateX(0px)translateY(-120px) matrix3d(1, -0.187196, 0, 0.003315, 0, 0.75, 0, 0, 0, 0, 1, 0, 75.4141, -14.1172, 0, 1)',
+                            }}
+                        >
+                            <div className="flex font-family-zentry items-baseline">
+                                <span
+                                    className="font-black text-black leading-none"
+                                    style={{
+                                        fontSize: '8rem',
+                                        fontWeight: '900',
+                                        marginRight: "0.1rem",
+                                        transform: 'scaleX(0.8)',
+                                    }}
+                                >
+                                    5
+                                </span>
+                                <span
+                                    className="font-black text-black leading-none"
+                                    style={{
+                                        fontSize: '8rem',
+                                        fontWeight: '900',
+                                        transform: 'scaleX(1.3)',
+                                        marginRight: "1.1rem",
+                                    }}
+                                >
+                                 0
+                                </span>
+                                <span
+                                    className="font-black text-black leading-none"
+                                    style={{
+                                        fontSize: '8rem',
+                                        fontWeight: '900',
+                                        marginRight: "0.7rem",
+                                        transform: 'scaleX(1.4)',
+                                    }}
+                                >
+                                 0
+                                </span>
+                                <span
+                                    className="font-black special-font text-black leading-none"
+                                    style={{
+                                        fontSize: '8rem',
+                                        fontWeight: '900',
+                                        marginRight: "0.3rem",
+                                        transform: 'scaleX(1)',
+                                    }}
+                                >
+                                <b>K</b>
+                                </span>
+                                <sup
+                                    className="font-black text-black"
+                                    style={{
+                                        fontSize: '5rem',
+                                        fontWeight: '900',
+                                        transform: 'scaleX(1.5)',
+                                    }}
+                                >
+                                    +
+                                </sup>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Card 3 - Partners */}
+                    <div
+                        ref={el => cardRefs.current[2] = el}
+                        className="col-start-1 col-span-3 row-start-7 row-span-2 bg-yellow-300 text-black rounded-lg flex items-center justify-center p-6 relative cursor-pointer overflow-hidden"
+                        onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}
+                    >
+                        {/* Numbers - Always Centered */}
+                        <div
+                            style={{
+                                transition: 'all 0.7s cubic-bezier(0.68, -0.35, 0.32, 1.35)',
+                                transform: 'translateX(0px)translateY(-30px)matrix3d(0.99, -0.236771, 0, 0.004, 0, 0.82104, 0, 0, 0, 0, 1, 0, 33.9316, -10.5929, 0, 1)',
+                            }}
+                        >
+                            <div className="flex font-family-zentry items-baseline"
+                            >
+                                  <span
+                                      className="font-black special-font text-black leading-none"
+                                      style={{
+                                          fontSize: '10rem',
+                                          fontWeight: '900',
+                                          marginRight: "0.2rem",
+                                          transform: 'scaleX(0.8)'
+                                      }}
+                                  >
+                                    <b>3</b>
+                                  </span>
+                                <span
+                                    className="font-black special-font text-black leading-none"
+                                    style={{
+                                        fontSize: '10rem',
+                                        fontWeight: '900',
+                                        marginRight: "1.5rem",
+                                        transform: 'scaleX(1.4)',
+                                    }}
+                                >
+                                      <b>0</b>
+                                </span>
+                                <sup
+                                    className="font-black text-black"
+                                    style={{
+                                        fontSize: '5rem',
+                                        fontWeight: '900',
+                                        transform: 'scaleX(1.5)',
+                                    }}
+                                >
+                                    +
+                                </sup>
+                            </div>
+                        </div>
+
+                        {/* Partners label */}
+                        <div className="absolute bottom-3 right-3 md:bottom-6 md:right-6">
+                            <h2 className="font-family-general text-[11px] md:text-md text-black leading-tight">
+                                Partners
+                            </h2>
+                        </div>
+                    </div>
+
+                    {/* Card 4 - Treasury */}
+                    <div
+                        ref={el => cardRefs.current[3] = el}
+                        className="col-start-2 col-span-4 row-start-9 row-span-4 flex flex-col relative bg-violet-300 rounded-md p-3">
+                        <div className="absolute bottom-0 left-0 w-full h-[10%] z-10 p-4 pointer-events-none">
+                            <img
+                                src="/img/card5-bottom.svg"
+                                className="md:w-full md:h-full object-contain rounded-b-lg"
+                            />
+                        </div>
+                        <div className="flex flex-col gap-1 w-1/2">
+                            <h2 className="font-family-general text-[10px] md:text-md text-black leading-tight">
+                                Treasury
+                            </h2>
+                            <h1 className="font-family-zentry special-font text-black text-5xl md:text-6xl">140<b>M+</b></h1>
+                        </div>
+                        <div className="w-full flex items-center justify-center overflow-hidden">
+                            <video
+                                src="/videos/card-5.webm"
+                                loop
+                                muted
+                                autoPlay
+                                playsInline
+                                className="md:w-full md:h-full object-contain"
+                                style={{
+                                    transform: 'scale(1) translateY(-50px)'
+                                }}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Card 5 - Backers */}
+                    <div
+                        ref={el => cardRefs.current[4] = el}
+                        className="col-start-3 col-span-3 row-start-13 row-span-2 flex flex-col bg-black border border-white/30 rounded-md p-2 overflow-hidden">
+                        <div className="flex flex-col gap-1 w-full">
+                            <h1 className="font-family-zentry special-font animated-word uppercase leading-[0.9] text-blue-50 text-[2.5rem]">
+                                W<b>o</b>rld-Class <br/> B<b>a</b>ckers
+                            </h1>
+                        </div>
+                        <div className="font-family-general flex flex-col w-full text-blue-50 text-end mt-1 gap-[0.5px]">
+                            {
+                                Backers.map((backer, index) => (
+                                    <h2 key={index} className="font-family-general text-[9px] uppercase md:text-sm leading-tight">
+                                        {backer}
+                                    </h2>
+                                ))
+                            }
+                        </div>
+                    </div>
+
+                    {/* Card 6 - Revenue */}
+                    <div
+                        ref={el => cardRefs.current[5] = el}
+                        className="col-start-1 col-span-4 row-start-15 row-span-2 bg-[#dfdff0] text-black rounded-md flex items-center justify-center p-6 relative cursor-pointer overflow-hidden"
+                        onMouseEnter={() => setIsHoveredCard6(true)}
+                        onMouseLeave={() => setIsHoveredCard6(false)}
+                    >
+                        {/* Revenue label with 2024 */}
+                        <div className="absolute top-2 left-2">
+                            <h2 className="font-family-general text-[10px] md:text-md text-black leading-tight">
+                                Revenue generated
+                            </h2>
+                            <h2 className="font-family-general text-[10px] md:text-md text-black leading-tight">
+                                2024
+                            </h2>
+                        </div>
+
+                        {/* Numbers - Centered */}
+                        <div
+                            style={{
+                                transition: 'all 0.7s cubic-bezier(0.68, -0.35, 0.32, 1.35)',
+                                transform: 'translateX(-10px)translateY(10px) matrix3d(0.926406, -0.196135, 0, -0.0026704, -0.151133, 0.664846, 0, -0.001002, 0, 0, 1, 0, -49.6514, 19.2104, 0, 1)',
+                            }}
+                        >
+                            <div className="flex font-family-zentry items-baseline">
+                                <span
+                                    className="font-black text-black leading-none"
+                                    style={{
+                                        fontSize: '11rem',
+                                        fontWeight: '900',
+                                        marginRight: "1.2rem",
+                                        transform: 'scaleX(1) scaleY(1.2)'
+                                    }}
+                                >
+                                    4
+                                </span>
+                                <span
+                                    className="font-black text-black leading-none"
+                                    style={{
+                                        fontSize: '11rem',
+                                        fontWeight: '900',
+                                        marginRight: "1.4rem",
+                                        transform: "scaleX(1.5) scaleY(1.2)",
+                                    }}
+                                >
+                                    0
+                                </span>
+                                <span
+                                    className="font-black text-black special-font leading-none"
+                                    style={{
+                                        fontSize: '11rem',
+                                        fontWeight: '900',
+                                        transform: 'scaleX(1.1) scaleY(1.2)',
                                     }}
                                 >
                                     <b>M</b>

@@ -9,6 +9,7 @@ const Button = ({ id, title, rightIcon, leftIcon, containerClass }) => {
             id={id}
             className={clsx(
                 "font-family-robert-medium relative z-10 w-fit cursor-pointer overflow-hidden bg-violet-50 text-black",
+                isHovered ? "px-7 md:px-8 rounded-md" : "px-8 md:px-10 rounded-full",
                 containerClass
             )}
             style={{
@@ -24,7 +25,7 @@ const Button = ({ id, title, rightIcon, leftIcon, containerClass }) => {
         >
             {leftIcon}
 
-            <span className="relative inline-flex overflow-hidden text-[12px] uppercase">
+            <span className="relative inline-flex overflow-hidden text-[10px] md:text-[12px] uppercase">
                 <div
                     className="transition duration-500 ease-out"
                     style={{

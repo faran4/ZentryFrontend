@@ -112,7 +112,7 @@ const Footer = () => {
             m24: lerp(matrix1.m24, matrix2.m24, factor),
             m31: lerp(matrix1.m31, matrix2.m31, factor),
             m32: lerp(matrix1.m32, matrix2.m32, factor),
-            m33: lerp(matrix1.m33, matrix2.m33, factor),
+            m33: lerp(matrix1.m33, matrix2.m33, factor), // FIXED: Added matrix2.m33
             m34: lerp(matrix1.m34, matrix2.m34, factor),
             m41: lerp(matrix1.m41, matrix2.m41, factor),
             m42: lerp(matrix1.m42, matrix2.m42, factor),
@@ -193,10 +193,10 @@ const Footer = () => {
             </div>
 
             <div className="mx-8 px-4 pt-8 pb-20">
-                {/* Main Footer Content */}
-                <div className="w-full grid grid-cols-1 md:grid-cols-5 mb-8">
-                    {/* Logo Section */}
-                    <div className="flex flex-col">
+                {/* Main Footer Content - Responsive Layout */}
+                <div className="w-full grid grid-cols-3 md:grid-cols-5 mb-8 gap-8">
+                    {/* Logo Section - Always first column */}
+                    <div className="flex flex-col justify-start">
                         <div className="mb-4">
                             {/* Your logo component here */}
                             <div className="w-28 h-28">
@@ -205,8 +205,53 @@ const Footer = () => {
                         </div>
                     </div>
 
+                    {/* Mobile/Small screens: 2x2 Grid for remaining 4 sections */}
+                    <div className="md:hidden col-span-2 grid grid-cols-2 gap-12">
+                        {/* Explore Section */}
+                        <div className="flex flex-col items-center">
+                            <h3 className="text-[10px] font-family-general uppercase mb-8 text-center">Explore</h3>
+                            <ul className="font-family-robert-regular text-xl flex flex-col items-center">
+                                <AnimatedLink href="#home">Home</AnimatedLink>
+                                <AnimatedLink href="#prologue">Prologue</AnimatedLink>
+                                <AnimatedLink href="#about">About</AnimatedLink>
+                                <AnimatedLink href="#contact">Contact</AnimatedLink>
+                            </ul>
+                        </div>
+
+                        {/* Products Section */}
+                        <div className="flex flex-col items-center">
+                            <h3 className="text-[10px] font-family-general uppercase mb-8 text-center">Products</h3>
+                            <ul className="font-family-robert-regular text-xl flex flex-col items-center">
+                                <AnimatedLink href="#radiant">Radiant</AnimatedLink>
+                                <AnimatedLink href="#nexus">Nexus</AnimatedLink>
+                                <AnimatedLink href="#zigma">Zigma</AnimatedLink>
+                                <AnimatedLink href="#azul">Azul</AnimatedLink>
+                            </ul>
+                        </div>
+
+                        {/* Follow Us Section */}
+                        <div className="flex flex-col items-center">
+                            <h3 className="text-[10px] font-family-general uppercase mb-8 text-center">Follow Us</h3>
+                            <ul className="font-family-robert-regular text-xl flex flex-col items-center">
+                                <AnimatedLink href="#discord">Discord</AnimatedLink>
+                                <AnimatedLink href="#twitter">X</AnimatedLink>
+                                <AnimatedLink href="#youtube">Youtube</AnimatedLink>
+                                <AnimatedLink href="#medium">Medium</AnimatedLink>
+                            </ul>
+                        </div>
+
+                        {/* Resources Section */}
+                        <div className="flex flex-col items-center">
+                            <h3 className="text-[10px] font-family-general uppercase mb-8 text-center">Resources</h3>
+                            <ul className="font-family-robert-regular text-xl flex flex-col items-center">
+                                <AnimatedLink href="#media-kit">MediaKit</AnimatedLink>
+                            </ul>
+                        </div>
+                    </div>
+
+                    {/* Desktop: Individual columns for each section */}
                     {/* Explore Section */}
-                    <div className="flex flex-col items-center">
+                    <div className="hidden md:flex flex-col items-center">
                         <h3 className="text-[10px] font-family-general uppercase mb-8 text-center">Explore</h3>
                         <ul className="font-family-robert-regular text-xl flex flex-col items-center">
                             <AnimatedLink href="#home">Home</AnimatedLink>
@@ -217,7 +262,7 @@ const Footer = () => {
                     </div>
 
                     {/* Products Section */}
-                    <div className="flex flex-col items-center">
+                    <div className="hidden md:flex flex-col items-center">
                         <h3 className="text-[10px] font-family-general uppercase mb-8 text-center">Products</h3>
                         <ul className="font-family-robert-regular text-xl flex flex-col items-center">
                             <AnimatedLink href="#radiant">Radiant</AnimatedLink>
@@ -227,7 +272,8 @@ const Footer = () => {
                         </ul>
                     </div>
 
-                    <div className="flex flex-col items-center">
+                    {/* Follow Us Section */}
+                    <div className="hidden md:flex flex-col items-center">
                         <h3 className="text-[10px] font-family-general uppercase mb-8 text-center">Follow Us</h3>
                         <ul className="font-family-robert-regular text-xl flex flex-col items-center">
                             <AnimatedLink href="#discord">Discord</AnimatedLink>
@@ -238,7 +284,7 @@ const Footer = () => {
                     </div>
 
                     {/* Resources */}
-                    <div className="flex flex-col items-center">
+                    <div className="hidden md:flex flex-col items-center">
                         <h3 className="text-[10px] font-family-general uppercase mb-8 text-center">Resources</h3>
                         <ul className="font-family-robert-regular text-xl flex flex-col items-center">
                             <AnimatedLink href="#media-kit">MediaKit</AnimatedLink>
